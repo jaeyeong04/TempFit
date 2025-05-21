@@ -1,0 +1,26 @@
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+main {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+.container {
+  width: 1824px;
+  height: 850px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.flexForm {
+  display: flex !important;
+  align-items: center;
+  gap: 300px;
+}
