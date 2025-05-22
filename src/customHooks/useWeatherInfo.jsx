@@ -5,8 +5,7 @@ import { xy_conv } from "../utils/xy_conv.jsx";
 const API_KEY = import.meta.env.REACT_APP_WEATHER_API_KEY;
 function useWeather(latitude, longitude) {
   const [currentTemp, setCurrentTemp] = useState(null); //현재 기온
-  const [maxTemp, setMaxTemp] = useState(null); // 최고 기온
-  const [minTemp, setMinTemp] = useState(null); //최저 기온
+
   const [sky, setSky] = useState(null); //날씨 정보
   const [pty, setPty] = useState(null); //눈or비 정보
   const [time, setTime] = useState(null); //fcstTime
@@ -70,13 +69,12 @@ function useWeather(latitude, longitude) {
   const weather = useMemo(
     () => ({
       currentTemp,
-      maxTemp,
-      minTemp,
+
       sky,
       pty,
       time,
     }),
-    [currentTemp, maxTemp, minTemp, sky, pty, time]
+    [currentTemp, sky, pty, time]
   );
 
   return weather;
