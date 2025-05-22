@@ -30,8 +30,6 @@ const weatherIcons = {
 
 function WeatherDisplay({ info, weather }) {
   let currentTemp = info.currentTemp[0];
-  let minTemp = info.minTemp;
-  let maxTemp = info.maxTemp;
   let tempArr = info.currentTemp;
   let times = info.time;
   return (
@@ -52,10 +50,7 @@ function WeatherDisplay({ info, weather }) {
       <div style={{ fontSize: "96px" }}>현재 기온</div>
       {weatherIcons[weather[0]]}
       <div style={{ fontSize: "96px" }}>{currentTemp}°C</div>
-      <div style={{ display: "flex", gap: "50px" }}>
-        <div style={{ fontSize: "40px" }}>최저: {minTemp}°C</div>
-        <div style={{ fontSize: "40px" }}>최고: {maxTemp}°C</div>
-      </div>
+
       <div
         style={{
           width: "100%",

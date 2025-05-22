@@ -9,37 +9,27 @@ const displayNames = {
 };
 
 function Underwear({ underwear }) {
-  if (underwear === undefined || underwear.length === 0 || underwear === null) {
-    return (
-      <div
-        style={{
-          gridColumn: "3/4",
-          gridRow: "2/7",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "rgb(105, 105, 105, 0.6)",
-          fontSize: "30px",
-          color: "black",
-        }}
-      >
-        내복
-      </div>
-    );
-  }
-  let [currentUnderwear, setCurrentUnderwear] = useState(underwear[0]);
+  let [currentUnderwear, setCurrentUnderwear] = useState(null);
   useEffect(() => {
-    setCurrentUnderwear(underwear[0]);
+    if (underwear && underwear.length > 0) {
+      setCurrentUnderwear(underwear[0]);
+    } else {
+      setCurrentUnderwear(null);
+    }
   }, [underwear]);
-  const currentIndex = underwear.indexOf(currentUnderwear);
-  const currentUnderwearName = underwear[currentIndex];
-  const currentImage = underwears[currentUnderwearName];
+  const currentIndex = currentUnderwear
+    ? underwear.indexOf(currentUnderwear)
+    : -1;
+  const currentUnderwearName = currentUnderwear ?? null;
+  const currentImage = currentUnderwearName
+    ? underwears[currentUnderwearName]
+    : null;
 
   return (
     <div
       style={{
-        gridColumn: "1/2",
-        gridRow: "2/12",
+        gridColumn: "3/4",
+        gridRow: "2/7",
         display: "flex",
         justifyContent: "space-between",
         flexDirection: "column",
@@ -48,6 +38,7 @@ function Underwear({ underwear }) {
     >
       <button
         onClick={() => {
+          if (!underwear || underwear.length === 0) return;
           const prevIndex =
             (currentIndex + (underwear.length - 1)) % underwear.length;
           setCurrentUnderwear(underwear[prevIndex]);
@@ -63,32 +54,43 @@ function Underwear({ underwear }) {
       >
         ↑
       </button>
-      <div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "black",
-            fontSize: "1.8vw",
-          }}
-        >
-          {displayNames[currentUnderwearName]}
-        </div>
-        <img
-          src={currentImage}
-          style={{
-            maxWidth: "100%",
-            maxHeight: "100%",
-            objectFit: "contain",
-            aspectRatio: "auto",
-            display: "block",
-            margin: "0 auto",
-          }}
-        />
+      <div style={{ textAlign: "center" }}>
+        {currentUnderwearName ? (
+          <>
+            <div
+              style={{
+                color: "black",
+                fontSize: "25px",
+              }}
+            >
+              {displayNames[currentUnderwearName]}
+            </div>
+            <img
+              src={currentImage}
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+                objectFit: "contain",
+                aspectRatio: "auto",
+                display: "block",
+                margin: "0 auto",
+              }}
+            />
+          </>
+        ) : (
+          <div
+            style={{
+              fontSize: "30px",
+              color: "black",
+            }}
+          >
+            내복
+          </div>
+        )}
       </div>
       <button
         onClick={() => {
+          if (!underwear || underwear.length === 0) return;
           const nextIndex = (currentIndex + 1) % underwear.length;
           setCurrentUnderwear(underwear[nextIndex]);
         }}

@@ -34,31 +34,17 @@ const displayNames = {
 };
 
 function Outer({ outer }) {
-  if (outer === undefined || outer.length === 0 || outer === null) {
-    return (
-      <div
-        style={{
-          gridColumn: "1/2",
-          gridRow: "2/12",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "rgb(105, 105, 105, 0.6)",
-          fontSize: "30px",
-          color: "black",
-        }}
-      >
-        외투
-      </div>
-    );
-  }
-  let [currentOuter, setCurrentOuter] = useState(outer[0]);
+  let [currentOuter, setCurrentOuter] = useState(null);
   useEffect(() => {
-    setCurrentOuter(outer[0]);
+    if (outer && outer.length > 0) {
+      setCurrentOuter(outer[0]);
+    } else {
+      setCurrentOuter(null);
+    }
   }, [outer]);
-  const currentIndex = outer.indexOf(currentOuter);
-  const currentOuterName = outer[currentIndex];
-  const currentImage = outers[currentOuterName];
+  const currentIndex = currentOuter ? outer.indexOf(currentOuter) : -1;
+  const currentOuterName = currentOuter ?? null;
+  const currentImage = currentOuterName ? outers[currentOuterName] : null;
   return (
     <div
       style={{
@@ -72,6 +58,7 @@ function Outer({ outer }) {
     >
       <button
         onClick={() => {
+          if (!outer || outer.length === 0) return;
           const prevIndex = (currentIndex + (outer.length - 1)) % outer.length;
           setCurrentOuter(outer[prevIndex]);
         }}
@@ -86,33 +73,47 @@ function Outer({ outer }) {
       >
         ↑
       </button>
-      <div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "black",
-            fontSize: "1.8vw",
-          }}
-        >
-          {displayNames[currentOuterName]}
-        </div>
-        <img
-          src={currentImage}
-          style={{
-            maxWidth: "100%",
-            maxHeight: "100%",
-            objectFit: "contain",
-            aspectRatio: "auto",
-            display: "block",
-            margin: "0 auto",
-          }}
-        />
+      <div style={{ textAlign: "center" }}>
+        {currentOuterName ? (
+          <>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "black",
+                fontSize: "25px",
+              }}
+            >
+              {displayNames[currentOuterName]}
+            </div>
+            <img
+              src={currentImage}
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+                objectFit: "contain",
+                aspectRatio: "auto",
+                display: "block",
+                margin: "0 auto",
+              }}
+            />
+          </>
+        ) : (
+          <div
+            style={{
+              fontSize: "30px",
+              color: "black",
+            }}
+          >
+            아우터
+          </div>
+        )}
       </div>
 
       <button
         onClick={() => {
+          if (!outer || outer.length === 0) return;
           const nextIndex = (currentIndex + 1) % outer.length;
           setCurrentOuter(outer[nextIndex]);
         }}

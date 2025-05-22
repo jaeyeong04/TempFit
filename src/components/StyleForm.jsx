@@ -10,7 +10,6 @@ function StyleForm({ onSubmit }) {
       alert("성별과 스타일을 모두 선택해주세요.");
       return;
     }
-    console.log("제출완료");
     onSubmit({ gender, style });
   };
 

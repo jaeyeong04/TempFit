@@ -9,11 +9,8 @@ const weatherNumbers = {
 };
 
 function useSkyStatus(locationInfo, weatherInfo) {
-  const [hasBigTempDiff, setHasBigTempDiff] = useState(false);
   const [weather, setWeather] = useState([]);
   useEffect(() => {
-    if (!locationInfo || !weatherInfo) return;
-    setHasBigTempDiff(weatherInfo.maxTemp - weatherInfo.minTemp > 10);
     const weatherArr = [];
     for (let i = 0; i < 13; i++) {
       const pty = weatherInfo.pty?.[i];
@@ -34,7 +31,7 @@ function useSkyStatus(locationInfo, weatherInfo) {
     }
     setWeather(weatherArr);
   }, [weatherInfo, locationInfo]);
-  return { weather, hasBigTempDiff };
+  return { weather };
 }
 
 export default useSkyStatus;

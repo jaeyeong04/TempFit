@@ -4,7 +4,6 @@ import { xy_conv } from "../utils/xy_conv.jsx";
 
 const API_KEY = import.meta.env.REACT_APP_WEATHER_API_KEY;
 function useWeather(latitude, longitude) {
-  console.log(latitude, longitude);
   const [currentTemp, setCurrentTemp] = useState(null); //현재 기온
   const [maxTemp, setMaxTemp] = useState(null); // 최고 기온
   const [minTemp, setMinTemp] = useState(null); //최저 기온
@@ -61,28 +60,6 @@ function useWeather(latitude, longitude) {
             .filter((item) => item.category === "T1H")
             .slice(0, 6)
             .map((item) => item.fcstTime)
-        );
-
-        //Get min/maxTemp
-        const vilageRes = await fetch(
-          `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${API_KEY}&numOfRows=158&pageNo=1&dataType=JSON&base_date=${date}&base_time=0200&nx=${nx}&ny=${ny}`,
-          {
-            headers: {
-              Accept: "application / json",
-            },
-            method: "GET",
-          }
-        );
-        if (!vilageRes.ok)
-          throw new Error(`단기예보 fetch 실패: ${vilageRes.status}`);
-        const vilageData = await vilageRes.json();
-        const vilageItems = vilageData?.response?.body?.items?.item;
-        if (!vilageItems) throw new Error("단기예보 데이터 없음");
-        setMaxTemp(
-          vilageItems.filter((item) => item.category === "TMX")[0].fcstValue
-        );
-        setMinTemp(
-          vilageItems.filter((item) => item.category === "TMN")[0].fcstValue
         );
       } catch (err) {
         console.error("날씨 API 호출 실패:", err.message);

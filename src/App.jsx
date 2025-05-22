@@ -23,7 +23,7 @@ function App() {
   );
   const skyStatus = useSkyStatus(locationInfo, weatherInfo);
   const [formResult, setFormResult] = useState(null);
-  const [clothes, setClothes] = useState([]);
+  const [clothes, setClothes] = useState({});
 
   useEffect(() => {
     if (formResult) {
@@ -49,10 +49,7 @@ function App() {
                 <Bottom bottom={clothes.bottom}></Bottom>
                 <Shoes shoes={clothes.shoes}></Shoes>
                 <Underwear underwear={clothes.underwear}></Underwear>
-                <AdditionalInfo
-                  rainInfo={weatherInfo.pty}
-                  hasBigTempDiff={skyStatus.hasBigTempDiff}
-                ></AdditionalInfo>
+                <AdditionalInfo rainInfo={weatherInfo.pty}></AdditionalInfo>
               </ClothesDisplay>
             </div>
           </Background>

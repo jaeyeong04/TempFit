@@ -31,31 +31,17 @@ const displayNames = {
 };
 
 function Bottom({ bottom }) {
-  if (bottom === undefined || bottom.length === 0 || bottom === null) {
-    return (
-      <div
-        style={{
-          gridColumn: "2/3",
-          gridRow: "6/11",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "rgb(105, 105, 105, 0.6)",
-          fontSize: "30px",
-          color: "black",
-        }}
-      >
-        하의
-      </div>
-    );
-  }
-  let [currentBottom, setCurrentBottom] = useState(bottom[0]);
+  let [currentBottom, setCurrentBottom] = useState(null);
   useEffect(() => {
-    setCurrentBottom(bottom[0]);
+    if (bottom && bottom.length > 0) {
+      setCurrentBottom(bottom[0]);
+    } else {
+      setCurrentBottom(null);
+    }
   }, [bottom]);
-  const currentIndex = bottom.indexOf(currentBottom);
-  const currentBottomName = bottom[currentIndex];
-  const currentImage = bottoms[currentBottomName];
+  const currentIndex = currentBottom ? bottom.indexOf(currentBottom) : -1;
+  const currentBottomName = currentBottom ?? null;
+  const currentImage = currentBottomName ? bottoms[currentBottomName] : null;
 
   return (
     <div
@@ -70,6 +56,7 @@ function Bottom({ bottom }) {
     >
       <button
         onClick={() => {
+          if (!bottom || bottom.length === 0) return;
           const prevIndex =
             (currentIndex + (bottom.length - 1)) % bottom.length;
           setCurrentBottom(bottom[prevIndex]);
@@ -85,32 +72,43 @@ function Bottom({ bottom }) {
       >
         ↑
       </button>
-      <div style={{ height: "80%" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "black",
-            fontSize: "1vw",
-          }}
-        >
-          {displayNames[currentBottomName]}
-        </div>
-        <img
-          src={currentImage}
-          style={{
-            maxWidth: "80%",
-            maxHeight: "80%",
-            objectFit: "contain",
-            aspectRatio: "auto",
-            display: "block",
-            margin: "0 auto",
-          }}
-        />
+      <div style={{ height: "80%", textAlign: "center" }}>
+        {currentBottomName ? (
+          <>
+            <div
+              style={{
+                color: "black",
+                fontSize: "25px",
+              }}
+            >
+              {displayNames[currentBottomName]}
+            </div>
+            <img
+              src={currentImage}
+              style={{
+                maxWidth: "80%",
+                maxHeight: "80%",
+                objectFit: "contain",
+                aspectRatio: "auto",
+                display: "block",
+                margin: "0 auto",
+              }}
+            />
+          </>
+        ) : (
+          <div
+            style={{
+              fontSize: "30px",
+              color: "black",
+            }}
+          >
+            하의
+          </div>
+        )}
       </div>
       <button
         onClick={() => {
+          if (!bottom || bottom.length === 0) return;
           const nextIndex = (currentIndex + 1) % bottom.length;
           setCurrentBottom(bottom[nextIndex]);
         }}

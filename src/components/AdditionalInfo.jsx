@@ -1,4 +1,4 @@
-function AdditionalInfo({ rainInfo, hasBigTempDiff }) {
+function AdditionalInfo({ rainInfo }) {
   let elements = [];
   for (let i = 0; i < rainInfo.length; i++) {
     if (rainInfo[0] == 0) {
@@ -12,11 +12,7 @@ function AdditionalInfo({ rainInfo, hasBigTempDiff }) {
       break;
     }
   }
-  if (hasBigTempDiff) {
-    elements.push(
-      <div key="tempDiff">일교차가 심해, 옷을 겹쳐 입는 것을 추천합니다</div>
-    );
-  }
+
   if (elements.length == 0) {
     return (
       <div

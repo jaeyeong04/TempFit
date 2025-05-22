@@ -34,31 +34,17 @@ const displayNames = {
 };
 
 function Top({ top }) {
-  if (top === undefined || top.length === 0 || top === null) {
-    return (
-      <div
-        style={{
-          gridColumn: "2/3",
-          gridRow: "2/6",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "rgb(105, 105, 105, 0.6)",
-          fontSize: "30px",
-          color: "black",
-        }}
-      >
-        상의
-      </div>
-    );
-  }
-  let [currentTop, setCurrentTop] = useState(top[0]);
+  let [currentTop, setCurrentTop] = useState(null);
   useEffect(() => {
-    setCurrentTop(top[0]);
+    if (top && top.length > 0) {
+      setCurrentTop(top[0]);
+    } else {
+      setCurrentTop(null);
+    }
   }, [top]);
-  const currentIndex = top.indexOf(currentTop);
-  const currentTopName = top[currentIndex];
-  const currentImage = tops[currentTopName];
+  const currentIndex = currentTop ? top.indexOf(currentTop) : -1;
+  const currentTopName = currentTop ?? null;
+  const currentImage = currentTopName ? tops[currentTopName] : null;
 
   return (
     <div
@@ -73,6 +59,7 @@ function Top({ top }) {
     >
       <button
         onClick={() => {
+          if (!top || top.length === 0) return;
           const prevIndex = (currentIndex + (top.length - 1)) % top.length;
           setCurrentTop(top[prevIndex]);
         }}
@@ -87,32 +74,43 @@ function Top({ top }) {
       >
         ↑
       </button>
-      <div style={{ height: "80%" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "black",
-            fontSize: "1vw",
-          }}
-        >
-          {displayNames[currentTopName]}
-        </div>
-        <img
-          src={currentImage}
-          style={{
-            maxWidth: "80%",
-            maxHeight: "80%",
-            objectFit: "contain",
-            aspectRatio: "auto",
-            display: "block",
-            margin: "0 auto",
-          }}
-        />
+      <div style={{ height: "80%", textAlign: "center" }}>
+        {currentTopName ? (
+          <>
+            <div
+              style={{
+                color: "black",
+                fontSize: "25px",
+              }}
+            >
+              {displayNames[currentTopName]}
+            </div>
+            <img
+              src={currentImage}
+              style={{
+                maxWidth: "80%",
+                maxHeight: "80%",
+                objectFit: "contain",
+                aspectRatio: "auto",
+                display: "block",
+                margin: "0 auto",
+              }}
+            />
+          </>
+        ) : (
+          <div
+            style={{
+              fontSize: "30px",
+              color: "black",
+            }}
+          >
+            상의
+          </div>
+        )}
       </div>
       <button
         onClick={() => {
+          if (!top || top.length === 0) return;
           const nextIndex = (currentIndex + 1) % top.length;
           setCurrentTop(top[nextIndex]);
         }}

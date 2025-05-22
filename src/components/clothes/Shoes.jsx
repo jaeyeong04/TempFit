@@ -25,31 +25,17 @@ const displayNames = {
 };
 
 function Shoes({ shoes }) {
-  if (shoes === undefined || shoes.length === 0 || shoes === null) {
-    return (
-      <div
-        style={{
-          gridColumn: "2/3",
-          gridRow: "11/12",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "rgb(105, 105, 105, 0.6)",
-          fontSize: "30px",
-          color: "black",
-        }}
-      >
-        신발
-      </div>
-    );
-  }
-  let [currentShoes, setCurrentShoes] = useState(shoes[0]);
+  let [currentShoes, setCurrentShoes] = useState(null);
   useEffect(() => {
-    setCurrentShoes(shoes[0]);
+    if (shoes && shoes.length > 0) {
+      setCurrentShoes(shoes[0]);
+    } else {
+      setCurrentShoes(null);
+    }
   }, [shoes]);
-  const currentIndex = shoes.indexOf(currentShoes);
-  const currentShoesName = shoes[currentIndex];
-  const currentImage = shoeTypes[currentShoesName];
+  const currentIndex = currentShoes ? shoes.indexOf(currentShoes) : -1;
+  const currentShoesName = currentShoes ?? null;
+  const currentImage = currentShoesName ? shoeTypes[currentShoesName] : null;
 
   return (
     <div
@@ -65,6 +51,7 @@ function Shoes({ shoes }) {
     >
       <button
         onClick={() => {
+          if (!shoes || shoes.length === 0) return;
           const prevIndex = (currentIndex + (shoes.length - 1)) % shoes.length;
           setCurrentShoes(shoes[prevIndex]);
         }}
@@ -80,33 +67,55 @@ function Shoes({ shoes }) {
       >
         ←
       </button>
-      <div style={{ height: "80%", display: "flex", gap: "1%" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "black",
-            fontSize: "0.7vw",
-            width: "100%",
-          }}
-        >
-          {displayNames[currentShoesName]}
-        </div>
-        <img
-          src={currentImage}
-          style={{
-            maxWidth: "200%",
-            maxHeight: "200%",
-            objectFit: "contain",
-            aspectRatio: "auto",
-            display: "block",
-            margin: "0 auto",
-          }}
-        />
+      <div
+        style={{
+          height: "80%",
+          width: "40%",
+          display: "flex",
+          gap: "1%",
+          textAlign: "center",
+        }}
+      >
+        {currentShoesName ? (
+          <>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "black",
+                fontSize: "12px",
+                width: "100%",
+              }}
+            >
+              {displayNames[currentShoesName]}
+            </div>
+            <img
+              src={currentImage}
+              style={{
+                maxWidth: "200%",
+                maxHeight: "200%",
+                objectFit: "contain",
+                aspectRatio: "auto",
+                display: "block",
+                margin: "0 auto",
+              }}
+            />
+          </>
+        ) : (
+          <div
+            style={{
+              fontSize: "30px",
+              color: "black",
+            }}
+          >
+            신발
+          </div>
+        )}
       </div>
       <button
         onClick={() => {
+          if (!shoes || shoes.length === 0) return;
           const nextIndex = (currentIndex + 1) % shoes.length;
           setCurrentShoes(shoes[nextIndex]);
         }}
